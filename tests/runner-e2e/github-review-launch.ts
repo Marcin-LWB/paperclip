@@ -21,6 +21,7 @@ import type { MatrixExecution, RunnerE2EResult } from "./types.js";
 
 export async function runGitHubReviewCampaign(input: { executions: readonly MatrixExecution[]; catalog: readonly MatrixExecution[]; configFile?: string; repositoryRoot: string; provisionRepository?: boolean }) {
   if (input.executions.length !== 1 || input.executions[0]!.task.flow !== "github_review_journey") throw new ConnectionFailure("Select exactly one GitHub review journey cell separately.");
+  if (process.env.PAPERCLIP_E2E_OPERATIONS_MANIFEST) throw new ConnectionFailure("GitHub review journey has no budgeted routing qualification");
   return withConnectionCampaignCancellation(async campaignSignal => {
     const deadline = new AbortController();
     const signal = AbortSignal.any([campaignSignal, deadline.signal]);

@@ -15,6 +15,18 @@ import { attendGitHubJourneyAction } from "./github-review-attendance.js";
 import { PassThrough } from "node:stream";
 import type { Locator } from "@playwright/test";
 import { validateRetainedRunnerResult } from "./result-validation.js";
+import { runGitHubReviewCampaign } from "./github-review-launch.js";
+
+describe("governed campaign admission", () => {
+  it("rejects operations-managed selection before opening credentials or browsers", async () => {
+    const execution = runnerMatrix.find(entry => entry.id === "github-review-journey.configured-agent.daytona.setup-and-first-review")!;
+    vi.stubEnv("PAPERCLIP_E2E_OPERATIONS_MANIFEST", "/private/campaign.json");
+    try {
+      await expect(runGitHubReviewCampaign({ executions: [execution], catalog: runnerMatrix, repositoryRoot: "/does-not-exist" }))
+        .rejects.toThrow("no budgeted routing qualification");
+    } finally { vi.unstubAllEnvs(); }
+  });
+});
 
 describe("automatic review event policy", () => {
   it("accepts opened-only automation while ordinary mentions and comment replies remain available", () => {
