@@ -3464,9 +3464,6 @@ export function companySkillService(db: Db, options: { actor?: AuthorizationActo
     return readVersionForSkill(companyId, skillId, versionId);
   }
 
-  // Internal callers already holding an authorized skill must still bind the
-  // version to that exact company and skill, without repeating its disclosure
-  // decision and folder enrichment for every immutable snapshot.
   async function readVersionForSkill(companyId: string, skillId: string, versionId: string): Promise<CompanySkillVersion | null> {
     const row = await db
       .select()

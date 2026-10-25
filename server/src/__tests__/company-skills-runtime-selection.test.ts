@@ -140,8 +140,6 @@ describeDatabase("selected runtime skill reconciliation", () => {
     const after = await db.select().from(companySkills).where(eq(companySkills.companyId, companyId));
     expect(after.sort((a, b) => a.id.localeCompare(b.id))).toEqual(before.sort((a, b) => a.id.localeCompare(b.id)));
     console.info(JSON.stringify({ phase: "warm-runtime-read-budget", selectBuilderCalls: reads }));
-    // A warm legacy launch needs three skills. Re-reading project permissions
-    // and all folder paths separately for each bundled item is not bounded work.
     expect(reads).toBeLessThan(65);
   }, 30_000);
 
