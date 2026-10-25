@@ -88,21 +88,18 @@ Wersja w Windows (`C:\Users\m-ost\Projekty\10_Github\paperclip`) to osobna kopia
 
 ### A4. Instalacja zarządzana
 
-Zalecane: pobrać skrypt i sprawdzić sumę kontrolną (patrz `doc/INSTALLING.md`):
+**Wykonano 2026-10-25.** Skrypt `install.sh` ze strony paperclip.ing przekazał do CLI opcję `--no-prompt`, której opublikowany `paperclipai` (2026.1023.0) nie zna (`error: unknown option '--no-prompt'`). Zadziałało bezpośrednie polecenie:
 
 ```bash
-curl -fsSLO https://paperclip.ing/install.sh
-curl -fsSLO https://paperclip.ing/install.sh.sha256
-sha256sum -c install.sh.sha256
-bash install.sh --no-onboard
-```
-
-Następnie:
-
-```bash
+export PATH=$HOME/.local/bin:$PATH
+npx --yes paperclipai@latest install --yes
 paperclipai --version
 paperclipai onboard --yes
 ```
+
+`onboard --yes` uruchamia serwer w pierwszym planie i nie kończy się samo. Po starcie `/api/health` zwróciło `status: ok` (tryb `local_trusted`, port 3100).
+
+Położenie: polecenie `~/.local/bin/paperclipai`, program `~/.paperclip/cli/installs/npm/<wersja>`, dane `~/.paperclip/instances/default/`. Z Windows: `\\wsl$\Ubuntu\home\m-ost\.paperclip`. Nie edytować plików bazy (`db/`) z Windows, gdy serwer działa.
 
 W konfiguracji nie ustawiać `DATABASE_URL` (ma zostać wbudowana baza).
 
