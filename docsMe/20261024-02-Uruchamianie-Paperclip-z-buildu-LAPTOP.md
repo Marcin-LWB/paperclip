@@ -2,13 +2,30 @@
 
 ## TL;DR — włączanie i wyłączanie
 
-**Włączanie — w PowerShell:**
+**Włączanie — wklej w PowerShell (działa także z `PS C:\WINDOWS\system32>`):**
 
 ```powershell
-wsl -d Ubuntu -- bash -lc 'cd /home/m-ost/paperclip && pnpm --filter @paperclipai/server exec tsx dist/index.js'
+wsl -d Ubuntu --cd /home/m-ost/paperclip -- /home/m-ost/.volta/bin/pnpm --filter @paperclipai/server exec tsx dist/index.js
 ```
 
-Zostaw terminal otwarty i wejdź na <http://127.0.0.1:3301/>.
+Ta komenda nie wymaga cudzysłowów i używa bezwzględnej ścieżki repozytorium w Ubuntu. Nie ma znaczenia, że PowerShell pokazuje `C:\WINDOWS\system32>`.
+
+Jeśli PowerShell pokaże `>>`, naciśnij `Ctrl+C`, aby anulować niedokończone polecenie. Gdy wróci prompt `PS ...>`, wklej komendę powyżej.
+
+Alternatywnie można uruchomić Ubuntu osobno:
+
+```bash
+wsl -d Ubuntu
+```
+
+Następnie w terminalu Ubuntu:
+
+```bash
+cd /home/m-ost/paperclip
+pnpm --filter @paperclipai/server exec tsx dist/index.js
+```
+
+Zostaw ten terminal otwarty i wejdź na <http://127.0.0.1:3301/>.
 
 **Wyłączanie:** poczekaj na koniec zadań agentów, naciśnij **`Ctrl+C`** w tym terminalu. Zamknięcie Chrome nie wyłącza serwera.
 
@@ -39,17 +56,17 @@ Powtarzaj build po zmianie kodu Paperclip lub pobraniu aktualizacji z `origin`/`
 
 Najpierw zakończ trwające zadania agentów i zatrzymaj serwer deweloperski, jeśli działa. Nie uruchamiaj równocześnie `pnpm dev` i zbudowanego serwera na porcie 3301.
 
-W Ubuntu:
+W PowerShell:
+
+```powershell
+wsl -d Ubuntu --cd /home/m-ost/paperclip -- /home/m-ost/.volta/bin/pnpm --filter @paperclipai/server exec tsx dist/index.js
+```
+
+Albo uruchom Ubuntu osobno i wpisz w jego terminalu:
 
 ```bash
 cd /home/m-ost/paperclip
 pnpm --filter @paperclipai/server exec tsx dist/index.js
-```
-
-To samo z PowerShell w Windows:
-
-```powershell
-wsl -d Ubuntu -- bash -lc 'cd /home/m-ost/paperclip && pnpm --filter @paperclipai/server exec tsx dist/index.js'
 ```
 
 W tej kopii źródłowej `tsx` jest potrzebny do odczytu wewnętrznych pakietów monorepo. Samo `pnpm --filter @paperclipai/server start` zakończyło się błędem brakującego `packages/db/src/client.js`; podana powyżej komenda działa z zbudowanym wejściem serwera i zbudowanym interfejsem.
