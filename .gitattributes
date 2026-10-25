@@ -1,1 +1,2 @@
-patches/*.patch whitespace=-space-before-tab
+# Skrypty uruchamiane w WSL/Linux muszą mieć końce linii LF
+*.sh text eol=lf
